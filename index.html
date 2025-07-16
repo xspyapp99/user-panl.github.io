@@ -247,7 +247,6 @@
             margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
         }
         .modal-header h3 { margin: 0; color: #fff; font-size: 1.5rem; }
-        /* FIX: Corrected modal body padding to restore card layout */
         .modal-body {
             overflow-y: auto;
             text-align: left;
@@ -258,7 +257,7 @@
 
         /* --- Card View Styles --- */
         .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .data-list { display: flex; flex-direction: column; gap: 1.5rem; } /* For single column layouts */
+        .data-list { display: flex; flex-direction: column; gap: 1.5rem; }
         .data-card {
             background: var(--card-surface);
             border: 1px solid var(--border-color);
@@ -368,8 +367,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            white-space: nowrap; /* FIX: Ensures footer text stays on one line */
-            padding: 0 1rem; /* Added horizontal padding */
+            padding: 0 1rem;
         }
         
         .page-footer a {
@@ -405,6 +403,20 @@
             .main-header h1 { font-size: 1.8rem; }
             .category-buttons { grid-template-columns: repeat(2, 1fr); }
             .auth-card { padding: 2rem; max-width: 90vw; }
+            /* FIX: Reduce modal padding on small screens */
+            .modal-content {
+                padding: 1rem;
+            }
+            .modal-body {
+                padding: 0 0.25rem 0.5rem 0.25rem;
+            }
+        }
+        /* FIX: Responsive footer font size to prevent clipping */
+        @media (max-width: 420px) {
+            .page-footer {
+                font-size: 0.75rem;
+                padding: 0 0.5rem;
+            }
         }
     </style>
 </head>
