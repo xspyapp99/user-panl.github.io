@@ -247,7 +247,12 @@
             margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
         }
         .modal-header h3 { margin: 0; color: #fff; font-size: 1.5rem; }
-        .modal-body { overflow-y: auto; text-align: left; padding: 0 1rem 1rem 0; }
+        /* FIX: Corrected modal body padding to restore card layout */
+        .modal-body {
+            overflow-y: auto;
+            text-align: left;
+            padding: 0 1rem 1rem 1rem;
+        }
         .modal-close-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text-primary); transition: all 0.3s ease; }
         .modal-close-btn:hover { color: var(--accent-teal); transform: rotate(90deg); }
 
@@ -277,7 +282,6 @@
         }
         .data-card-footer { font-size: 0.8rem; color: var(--text-secondary); text-align: right; margin-top: 1rem; opacity: 0.8; }
         
-        /* FIX: Made selector more specific */
         .location-card .data-card-body > div {
             display: flex;
             gap: 1rem;
@@ -296,7 +300,7 @@
             border-radius: 8px;
             font-weight: 500;
             transition: all 0.3s;
-            white-space: nowrap; /* FIX: Prevents button text from wrapping */
+            white-space: nowrap;
         }
         .map-link:hover { background: var(--accent-purple); }
 
@@ -361,10 +365,11 @@
             z-index: 1002;
             border-top: 1px solid var(--border-color);
             height: 45px;
-            /* FIX: Centering content robustly */
             display: flex;
             align-items: center;
             justify-content: center;
+            white-space: nowrap; /* FIX: Ensures footer text stays on one line */
+            padding: 0 1rem; /* Added horizontal padding */
         }
         
         .page-footer a {
@@ -384,12 +389,12 @@
                 height: 100%;
                 transform: translateX(-100%);
                 box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-                padding-bottom: 75px; /* Fix: Added space for the footer */
+                padding-bottom: 75px;
             }
             .sidebar.open { transform: translateX(0); }
-            .dashboard-container.sidebar-hidden .sidebar { transform: translateX(-100%); } /* Ensure it stays hidden on mobile */
-            #toggle-sidebar-btn { display: none; } /* Hide desktop toggle */
-            #menu-btn { display: flex; } /* Show mobile menu toggle */
+            .dashboard-container.sidebar-hidden .sidebar { transform: translateX(-100%); }
+            #toggle-sidebar-btn { display: none; }
+            #menu-btn { display: flex; }
             .main-content { padding: 1.5rem; }
             .main-header h1 { font-size: 2rem; }
             .category-buttons { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.5rem; }
@@ -752,7 +757,6 @@
                     const loc = data; // Location is an object, not an array
                     let mapLink = '';
                     if (loc.latitude && loc.longitude) {
-                         // FIX: Corrected Google Maps URL
                         mapLink = `<a href="https://www.google.com/maps?q=${loc.latitude},${loc.longitude}" target="_blank" class="map-link"><span>View on Google Maps</span></a>`;
                     }
                     contentHTML = `
@@ -960,7 +964,7 @@
             if (button.id === 'refresh-photos-btn') { displayCategoryData('photo'); }
         });
 
-        // FIX: Mobile menu toggle logic
+        // Mobile menu toggle logic
         menuBtn.addEventListener('click', () => { 
             sidebar.classList.toggle('open'); 
             overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
