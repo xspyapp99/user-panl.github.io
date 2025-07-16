@@ -339,7 +339,15 @@
         
         /* --- Responsive --- */
         @media (max-width: 992px) {
-            .sidebar { position: fixed; left: 0; top: 0; height: 100%; transform: translateX(-100%); box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+                padding-bottom: 75px; /* Fix: Added space for the footer */
+            }
             .sidebar.open { transform: translateX(0); }
             .dashboard-container.sidebar-hidden .sidebar { transform: translateX(-100%); } /* Ensure it stays hidden on mobile */
             #toggle-sidebar-btn { display: none; } /* Hide desktop toggle */
@@ -435,7 +443,6 @@
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--accent-pink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                         <span>Notifications</span>
                     </button>
-                    <!-- Restored Coming Soon Buttons -->
                     <button class="category-btn" data-category="coming-soon" data-feature-name="Live Screen">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
                         <span>Live Screen</span>
@@ -465,7 +472,6 @@
         </main>
     </div>
 
-    <!-- Modals -->
     <div id="data-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -473,8 +479,7 @@
                 <button id="modal-close-btn" class="modal-close-btn" data-target="data-modal">×</button>
             </div>
             <div class="modal-body" id="modal-data-display-area">
-                <!-- Data will be rendered here by JS -->
-            </div>
+                </div>
         </div>
     </div>
     
@@ -487,8 +492,7 @@
             <div class="modal-body" style="padding: 0;">
                 <div class="live-chat-area">
                     <div class="chat-messages" id="chat-messages-area">
-                        <!-- Chat messages will be loaded here -->
-                    </div>
+                        </div>
                     <div class="chat-input-area">
                         <input type="text" id="chat-message-input" placeholder="Type a message...">
                         <button id="chat-send-btn">
@@ -710,7 +714,7 @@
                     const loc = data; // Location is an object, not an array
                     let mapLink = '';
                     if (loc.latitude && loc.longitude) {
-                        mapLink = `<a href="http://maps.google.com/maps?q=${loc.latitude},${loc.longitude}" target="_blank" class="map-link"><span>View on Google Maps</span></a>`;
+                        mapLink = `<a href="https://maps.google.com/?q=${loc.latitude},${loc.longitude}" target="_blank" class="map-link"><span>View on Google Maps</span></a>`;
                     }
                     contentHTML = `
                         <div class="data-card location-card">
@@ -946,7 +950,7 @@
 
         function getFriendlyAuthError(errorCode) {
             switch (errorCode) {
-                case 'auth/invalid-email': return 'Please enter a valid email address.'; case 'auth/user-not-found': case 'auth/wrong-password': return 'Invalid email or password.'; case 'auth/email-already-in-use': return 'This email is already registered. Please login.'; case 'auth/weak-password': return 'Password should be at least 6 characters long.'; default: return 'An error occurred. Please try again.';
+                case 'auth/invalid-email': return 'Please enter a valid email address.'; case 'auth/user-not-found': case 'auth/wrong-password': return 'Invalid email or password.'; case 'auth/email-already-in-use': return 'This email is already registered. Please login.'; case 'auth/weak-password': return 'Password should be at least 6 characters long.'; default: 'An error occurred. Please try again.';
             }
         }
         function showToast(message) { toastNotification.textContent = message; toastNotification.classList.add('show'); setTimeout(() => { toastNotification.classList.remove('show'); }, 3000); }
